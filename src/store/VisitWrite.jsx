@@ -5,7 +5,7 @@ export const asyncUpDBFetch = createAsyncThunk(
   "visitWrite/asyncUpDBFetch",
   async () => {
     const data = await supabase
-      .from("mytest")
+      .from("guestBook")
       .select("*")
       .order("id", { ascending: true });
     return data.data;
@@ -56,13 +56,13 @@ export const updateUserAsync = createAsyncThunk(
   "visitWrite/updateContext",
   async (updateData) => {
     const data = await supabase
-      .from("mytest")
+      .from("guestBook")
       .select("password")
       .eq("id", updateData.id);
 
     if (updateData.password === data.data[0].password) {
       await supabase
-        .from("mytest")
+        .from("guestBook")
         .update({
           context: updateData.context,
         })
@@ -79,12 +79,12 @@ export const deleteUserAsync = createAsyncThunk(
   async (deleteUserInfo) => {
     console.log(deleteUserInfo.id);
     const data = await supabase
-      .from("mytest")
+      .from("guestBook")
       .select("password")
       .eq("id", deleteUserInfo.id);
     if (deleteUserInfo.pw === data.data[0].password) {
       console.log("delete passowrd true");
-      await supabase.from("mytest").delete().eq("id", deleteUserInfo.id);
+      await supabase.from("guestBook").delete().eq("id", deleteUserInfo.id);
       return true;
     } else {
       return false;
