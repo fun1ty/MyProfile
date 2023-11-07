@@ -10,7 +10,6 @@ const Router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
-    errorElement: <NotFound />,
   },
   {
     path: "/inHouse",
@@ -27,6 +26,10 @@ const Router = createBrowserRouter([
   {
     path: "/profile",
     element: <Profile />,
+  },
+  {
+    path: "/*",
+    errorElement: <NotFound />,
   },
 ]);
 
