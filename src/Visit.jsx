@@ -158,8 +158,8 @@ export default function Visit() {
               </label>
               <p className="errorMessage username">
                 {errors.username?.message ||
-                (DBuser &&
-                  DBuser.some((item) => item.name === getValues("username")))
+                (DBList[0] &&
+                  DBList[0].some((item) => item.name === getValues("username")))
                   ? "이미 있는 유저아이디 입니다."
                   : null}
               </p>
