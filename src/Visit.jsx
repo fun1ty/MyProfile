@@ -19,7 +19,6 @@ export default function Visit() {
   const [updateData, setUpdateData] = useState({});
   const [error, setError] = useState(null);
   // const beforePassword = useSelector((state) => state.visitWrite);
-  const [DBuser, setDBuser] = useState();
 
   const navigate = useNavigate();
   const onClick = () => {
@@ -160,8 +159,8 @@ export default function Visit() {
               </label>
               <p className="errorMessage username">
                 {errors.username?.message ||
-                (DBList[0] &&
-                  DBList[0].some((item) => item.name === getValues("username")))
+                (DBList &&
+                  DBList.some((item) => item.name === getValues("username")))
                   ? "이미 있는 유저아이디 입니다."
                   : null}
               </p>
