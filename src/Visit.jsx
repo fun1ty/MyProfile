@@ -72,6 +72,7 @@ export default function Visit() {
     console.log("add", data);
     if (data.username && data.write && data.password) {
       dispatch(insertUserAsync(data));
+      window.location.reload();
       setError(null);
     }
   };
@@ -94,6 +95,7 @@ export default function Visit() {
       setUpdateData(updatedData);
       setError(null);
       setValue("userPassword", "");
+      window.location.reload();
     } else {
       setError("비밀번호가 틀렸습니다.");
       setValue("userPassword", "");
