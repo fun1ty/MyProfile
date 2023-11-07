@@ -43,7 +43,7 @@ const currentTimestamp = new Date().toISOString();
 export const insertUserAsync = createAsyncThunk(
   "visitWrite/insertUser",
   async (userData) => {
-    const insertResult = await supabase.from("mytest").insert({
+    const insertResult = await supabase.from("guestBook").insert({
       name: userData.username,
       password: userData.password,
       context: userData.write,
