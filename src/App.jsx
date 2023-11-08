@@ -13,13 +13,11 @@ export default function App() {
           <MusicPlayer url={mp3} /> <p className="blank"></p>꽃을 클릭하세요♬
         </p>
       </Flower>
-      {/* <h4 className="periodTitle">Periods of Development :</h4>
-      <div className="period">2023.10.11 ~ 2023.10.19</div> */}
+
       <Spline
         className="spline"
         scene="https://prod.spline.design/jOg6QiwDPAkaHyyZ/scene.splinecode"
       />
-      <Content>{/* <button onClick={onClick}></button> */}</Content>
     </Wrapper>
   );
 }
@@ -74,19 +72,5 @@ const Flower = styled.div`
   }
   .blank {
     margin-left: 5px;
-  }
-`;
-
-const Content = styled.div`
-  position: relative;
-
-  button {
-    all: unset;
-    position: absolute;
-    width: 200px;
-    height: 200px;
-    right: 8em;
-    top: 24em;
-    cursor: pointer;
   }
 `;
