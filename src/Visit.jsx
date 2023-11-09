@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import { useSelector, useDispatch } from "react-redux";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   insertUserAsync,
   deleteUserAsync,
@@ -31,10 +31,22 @@ export default function Visit() {
   const DBList = useSelector((state) => state.visitWrite.array);
 
   console.log("DBList", DBList);
+  // dispatch(subscribeToDBData());
+
+  const memoizedDBList = useMemo(() => DBList, [DBList]);
+
   useEffect(() => {
-    // dispatch(subscribeToDBData());
-    dispatch(asyncUpDBFetch());
-  }, [dispatch]);
+    const fetchData = async () => {
+      const result = await dispatch(asyncUpDBFetch());
+      if (asyncUpDBFetch.fulfilled.match(result)) {
+        console.log("Data fetched successfully!");
+      } else {
+        console.error("Data fetch failed:", result.error);
+      }
+    };
+
+    fetchData();
+  }, [memoizedDBList]);
 
   // const DBList = useSelector((state) => state.visitWrite.array);
   // const DBListInsert = useSelector((state) => state.visitWrite.status);
@@ -70,8 +82,11 @@ export default function Visit() {
     setModalOpen(false);
     console.log("add", data);
     if (data.username && data.write && data.password) {
+      const result = insertUserAsync(data);
+      console.log("onSubmit result : ", result);
       dispatch(insertUserAsync(data));
-      window.location.reload();
+
+      // window.location.reload();
       setError(null);
     }
   };
@@ -94,7 +109,7 @@ export default function Visit() {
       setUpdateData(updatedData);
       setError(null);
       setValue("userPassword", "");
-      window.location.reload();
+      // window.location.reload();
     } else {
       setError("비밀번호가 틀렸습니다.");
       setValue("userPassword", "");
@@ -282,8 +297,9 @@ export default function Visit() {
       )}
       <table>
         <tbody>
-          {DBList[0] &&
-            DBList[0].map((value) => {
+          {DBList &&
+            DBList.map((value) => {
+              console.log(value.id);
               return (
                 <tr key={value.id}>
                   <td className="vistitMsg">

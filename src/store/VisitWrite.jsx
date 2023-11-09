@@ -43,12 +43,14 @@ const currentTimestamp = new Date().toISOString();
 export const insertUserAsync = createAsyncThunk(
   "visitWrite/insertUser",
   async (userData) => {
-    const insertResult = await supabase.from("guestBook").insert({
+    const data = {
       name: userData.username,
       password: userData.password,
       context: userData.write,
       timestamp: currentTimestamp,
-    });
+    };
+    await supabase.from("guestBook").insert(data);
+    return data;
   }
 );
 
@@ -83,7 +85,6 @@ export const deleteUserAsync = createAsyncThunk(
       .select("password")
       .eq("id", deleteUserInfo.id);
     if (deleteUserInfo.pw === data.data[0].password) {
-      console.log("delete passowrd true");
       await supabase.from("guestBook").delete().eq("id", deleteUserInfo.id);
       return true;
     } else {
@@ -135,7 +136,7 @@ const writeSlice = createSlice({
       state.status = "loading";
     });
     builder.addCase(asyncUpDBFetch.fulfilled, (state, action) => {
-      state.array.push(action.payload);
+      state.array = action.payload;
       state.status = "complete";
     });
     builder.addCase(asyncUpDBFetch.rejected, (state, action) => {
@@ -143,14 +144,51 @@ const writeSlice = createSlice({
       state.error = action.error.message;
     });
 
+    //insert
+    builder.addCase(insertUserAsync.pending, (state, action) => {
+      console.log("insertUserAsync");
+      state.status = "loading";
+    });
+    builder.addCase(insertUserAsync.fulfilled, (state, action) => {
+      state.array.push(action.payload);
+      state.status = "complete";
+    });
+    builder.addCase(insertUserAsync.rejected, (state, action) => {
+      state.status = "fail";
+      state.error = action.error.message;
+    });
+
     //update
     builder.addCase(updateUserAsync.pending, (state, action) => {
+      console.log("updateUSerAsync");
       state.status = "loading";
     });
     builder.addCase(updateUserAsync.fulfilled, (state, action) => {
+      const updatedData = action.payload;
+      const itemIndex = state.array.findIndex(
+        (item) => item.id === updatedData.id
+      );
+      if (itemIndex !== -1) {
+        state.array[itemIndex] = { ...state.array[itemIndex], ...updatedData };
+      }
       state.status = "complete";
     });
     builder.addCase(updateUserAsync.rejected, (state, action) => {
+      state.status = "fail";
+      state.error = action.error.message;
+    });
+
+    //delete
+    builder.addCase(deleteUserAsync.pending, (state, action) => {
+      console.log("deleteUserAsync");
+      state.status = "loading";
+    });
+    builder.addCase(deleteUserAsync.fulfilled, (state, action) => {
+      const deletedId = action.payload;
+      state.array = state.array.filter((item) => item.id !== deletedId);
+      state.status = "complete";
+    });
+    builder.addCase(deleteUserAsync.rejected, (state, action) => {
       state.status = "fail";
       state.error = action.error.message;
     });
