@@ -29,6 +29,7 @@ export default function Profile() {
             <span className="myName">김미리</span>
             <Contents>
               <img src={blog} alt="blog" className="blog" />
+              <span>준비중 입니다.</span>
               <a href="https://kimmr-fun1ty.vercel.app/" className="ablog">
                 https://kimmr-fun1ty.vercel.app/
               </a>

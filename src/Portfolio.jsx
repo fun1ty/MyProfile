@@ -9,6 +9,7 @@ export default function Portfolio() {
   };
   return (
     <Wrapper>
+      <h1>준비중입니다.</h1>
       <Spline
         className="spline"
         scene="https://prod.spline.design/bcHdIM6S2A1IL75D/scene.splinecode"
@@ -26,6 +27,13 @@ const Wrapper = styled.div`
     right: 0;
     left: 0;
     overflow: hidden;
+  }
+  h1 {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    font-family: "Pretendard";
+    z-index: 1;
   }
 `;
 const StyledButton = styled.button`
